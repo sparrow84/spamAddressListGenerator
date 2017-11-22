@@ -1,18 +1,33 @@
 import java.io.File;
 import java.io.IOException;
 
+/*
+* написать методы работы с логфайлом
+* написать конструктор для (синглтон)
+* */
+
 public class logWork {
 
-    File logFile = new File("../salg.log");
+    private File logFile = new File("../salg.log");
 
-    public static void checkLog(File logFile) {
+
+
+    private boolean checkLog(File logFile) {
         if (!logFile.exists()) {
             try {
                 logFile.createNewFile();
             } catch (IOException e) {
                 System.out.println("vvaMessage - Can't create log file.");
                 e.printStackTrace();
+                return false;
             }
+        }
+        return true;
+    }
+
+    public void logWrite (String logMsg) {
+        if (this.checkLog(logFile)) {
+
         }
     }
 }
