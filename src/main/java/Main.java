@@ -5,7 +5,14 @@ public class Main {
     public static void main(String ... args){
         System.out.println("*** Start program ***");
 
-        Thread prog = new Thread();
+        Thread prog = new Thread(new Runnable() {
+            public void run() {
+                LogWork lw = new LogWork();
+                lw.logWrite("*** Start program ***");
+            }
+        });
+
+        prog.start();
 
         readConfig();
 
