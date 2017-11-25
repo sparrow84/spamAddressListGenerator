@@ -19,6 +19,7 @@ import java.util.Date;
 public class LogWork {
 
     private File logFile = new File("../salg.log");
+    private SimpleDateFormat formatForCurDate = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss\"SSS");
 
     public LogWork() {
         this.checkLogExist(logFile);
@@ -50,6 +51,7 @@ public class LogWork {
 
         if (this.checkLogExist(logFile)) {
             try (FileWriter fileWriter = new FileWriter(logFile,true)) {
+                fileWriter.write(formatForCurDate.format(new Date()) + "    ");
                 fileWriter.write(logMsg);
                 fileWriter.write("\n");
             }
@@ -57,11 +59,6 @@ public class LogWork {
                 e.printStackTrace();
             }
             System.out.println(logMsg);
-
-            Date curDate = new Date();
-            SimpleDateFormat formatForCurDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-
-            System.out.println(formatForCurDate.format(curDate));
         }
     }
 }
