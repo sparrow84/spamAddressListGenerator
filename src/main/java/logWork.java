@@ -4,6 +4,7 @@ import java.io.IOException;
 /*
 * написать методы работы с логфайлом
 * написать конструктор для (синглтон)
+* qwe
 * */
 
 public class logWork {
