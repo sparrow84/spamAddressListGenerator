@@ -16,26 +16,12 @@ public class Main {
 
         readConfig();
 
-// test git
 
 
 
         lw.logWrite("*** End program ***");
     }
 
-    public static void readConfig() {
-        File pConfig = new File("../salg.conf");
 
-        System.out.println(pConfig.getAbsolutePath());
-        System.out.println(pConfig.exists());
-
-        if (!pConfig.exists()) {
-            try {
-                pConfig.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 }
