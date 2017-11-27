@@ -7,11 +7,13 @@ public class Main {
         Thread prog = new Thread(new Runnable() {
             public void run() {
 
-                ConfWork cf = new ConfWork();
+                ConfWork confWork = new ConfWork();
+
+                confWork.printParam();
 
                 MailLogHandler mlh = new MailLogHandler();
 
-                mlh.dummeMethod();
+                mlh.dummyMethod();
 
             }
         });

@@ -1,11 +1,11 @@
-public class MailLogHandler {
+class MailLogHandler {
 
-    public MailLogHandler () {
+    MailLogHandler() {
         //
     }
 
-    public void dummeMethod () {
-        System.out.println("Dumme method mail log handler");
+    void dummyMethod() {
+        System.out.println("Dummy method mail log handler");
     }
 
 }

@@ -61,6 +61,8 @@ public class LogWork {
                 e.printStackTrace();
             }
             System.out.println(logMsg);
+        } else {
+            System.out.println("Что то пошло не так с лог файлом LogWork -> logWrite");
         }
     }
 }
