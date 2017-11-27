@@ -9,17 +9,18 @@ public class Main {
         Thread prog = new Thread(new Runnable() {
             public void run() {
 
+                ConfWork cf = new ConfWork();
+
+                cf.readConfig();
+
             }
         });
 
         prog.start();
 
-        readConfig();
 
 
-
-
-        lw.logWrite("*** End program ***");
+        lw.logWrite("*** End program ***\n\n");
     }
 
 
