@@ -18,8 +18,10 @@ import java.util.Date;
 
 public class LogWork {
 
-    private File logFile = new File("../salg.log");
     private SimpleDateFormat formatForCurDate = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss\"SSS");
+    private SimpleDateFormat formatForLogName = new SimpleDateFormat("yyyy.MM.dd");
+    private String nameLogFile = "salg";
+    private File logFile = new File("../" + nameLogFile + "_" + formatForLogName.format(new Date()) + ".log");
 
     public LogWork() {
         this.checkLogExist(logFile);
