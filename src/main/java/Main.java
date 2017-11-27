@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.IOException;
 
 public class Main {
     public static void main(String ... args){
@@ -11,7 +9,9 @@ public class Main {
 
                 ConfWork cf = new ConfWork();
 
-                cf.readConfig();
+                MailLogHandler mlh = new MailLogHandler();
+
+                mlh.dummeMethod();
 
             }
         });

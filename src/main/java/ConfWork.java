@@ -16,14 +16,22 @@ public class ConfWork {
             try {
                 pConfig.createNewFile();
 
-                // Заполнить параметрами по умолчанию
+                // Fill parametrs by default
+                try (FileWriter fileWriter = new FileWriter(pConfig,true)) {
+                    fileWriter.write("mail_log_path = ~/mail\n");
+                    fileWriter.write("Parametr02 = qwe\n");
+                    fileWriter.write("Parametr03 = jhg3\n");
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        // Считать параметры
+        // Read parametrs
         try {
             FileInputStream fstream = new FileInputStream(pConfig);
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -31,7 +39,11 @@ public class ConfWork {
             String strLine;
 
             for (long i = 1; (strLine = br.readLine()) != null; i++) {
-                System.out.println(strLine);
+
+                // Ignore comments (string starts with ";")
+                if (!strLine.startsWith(";")) {
+                    System.out.println(strLine);
+                }
             }
 
         } catch (IOException e) {
