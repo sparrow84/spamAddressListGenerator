@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class ConfWork {
 
@@ -25,5 +24,20 @@ public class ConfWork {
         }
 
         // Считать параметры
+        try {
+            FileInputStream fstream = new FileInputStream(pConfig);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String strLine;
+
+            for (long i = 1; (strLine = br.readLine()) != null; i++) {
+                System.out.println(strLine);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
