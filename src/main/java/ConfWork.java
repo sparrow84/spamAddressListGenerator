@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 
 public class ConfWork {
 
@@ -10,6 +11,7 @@ public class ConfWork {
     private static int amnestyPeriod;
     private static int timeWaitRepeat;
     private static long lineNumberToStart;
+    private static List<String> stringsForSearch;
     private static String trash;
 
 //    ConfWork() {
@@ -40,9 +42,15 @@ public class ConfWork {
                     fileWriter.write("\ntimeWaitRepeat = 5");
                     fileWriter.write("\n");
                     fileWriter.write("\n; The line number from which you want to start reading the file");
-                    fileWriter.write("\n; The adjusted value is valid for the next cycle");
-                    fileWriter.write("\n; After one cycle the value becomes -1");
-                    fileWriter.write("\nlineNumberToStart = -1");
+                    fileWriter.write("\nlineNumberToStart = 1");
+                    fileWriter.write("\n");
+                    fileWriter.write("\n; List of strings to look for in the file to identify bad addresses");
+                    fileWriter.write("\n; Print one line separated by commas");
+                    fileWriter.write("\nstringsForSearch = " +
+                            "SASL LOGIN authentication failed," +
+                            "does not resolve to address," +
+                            "Host not found," +
+                            "need fully-qualified hostname");
                     fileWriter.write("\n");
 
                     mailLogPath = "";
@@ -93,6 +101,13 @@ public class ConfWork {
                         case "lineNumberToStart":
                             lineNumberToStart = Long.parseLong(arrayStrLine[1].trim());
                             break;
+                        case "stringsForSearch":
+
+                            for (String s: arrayStrLine[1].trim().split(",")) {
+                                stringsForSearch.add(s);
+                            }
+
+                            break;
                         default:
                             for (String s: arrayStrLine) {
                                 trash = trash + " | " + s;
@@ -116,6 +131,8 @@ public class ConfWork {
         System.out.println("- lineNumberToStart = " + lineNumberToStart);
         System.out.println("- trash = " + trash);
     }
+
+
 
     public static String getNameConfFile() {
         return nameConfFile;
@@ -166,10 +183,7 @@ public class ConfWork {
     }
 
     public static long getLineNumberToStart() {
-
-        long tmp = lineNumberToStart;
-        lineNumberToStart = -1;
-        return tmp;
+        return lineNumberToStart;
     }
 
     public static void setLineNumberToStart(long lineNumberToStart_) {

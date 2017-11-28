@@ -42,8 +42,7 @@ public class LogWork {
         if (checkLogExist(logFile)) {
             try (FileWriter fileWriter = new FileWriter(logFile,true)) {
                 fileWriter.write(formatForCurDate.format(new Date()) + "    ");
-                fileWriter.write(logMsg);
-                fileWriter.write("\n");
+                fileWriter.write(logMsg + "\n");
             }
             catch (IOException e) {
                 e.printStackTrace();

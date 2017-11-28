@@ -2,22 +2,23 @@
 public class Main {
     public static void main(String ... args){
 
-        LogWork.logWrite("*** Start program ***");
+        LogWork.logWrite("\n\n   *** Start program ***");
 
         Thread prog = new Thread(new Runnable() {
             public void run() {
 
-                ConfWork confWork = new ConfWork();
+                ConfWork.readConfig();
 
-                MailLogHandler mlh = new MailLogHandler("");
                 LogWork.logWrite("");
-                LogWork.logWrite("- mailLogPath = " + confWork.getMailLogPath());
-                LogWork.logWrite("- allowableFrequency = " + confWork.getAllowableFrequency());
-                LogWork.logWrite("- amnestyPeriod = " + confWork.getAmnestyPeriod());
-                LogWork.logWrite("- timeWaitRepeat = " + confWork.getTimeWaitRepeat());
-                LogWork.logWrite("- lineNumberToStart = " + confWork.getLineNumberToStart());
-                LogWork.logWrite("- trash = " + confWork.getTrash());
+                LogWork.logWrite("- mailLogPath = " + ConfWork.getMailLogPath());
+                LogWork.logWrite("- allowableFrequency = " + ConfWork.getAllowableFrequency());
+                LogWork.logWrite("- amnestyPeriod = " + ConfWork.getAmnestyPeriod());
+                LogWork.logWrite("- timeWaitRepeat = " + ConfWork.getTimeWaitRepeat());
+                LogWork.logWrite("- lineNumberToStart = " + ConfWork.getLineNumberToStart());
+                LogWork.logWrite("- trash = " + ConfWork.getTrash());
 
+                MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
+                mailLogHandler.scanFile();
 
             }
         });
@@ -26,7 +27,7 @@ public class Main {
 
 
 
-        LogWork.logWrite("*** End program ***\n\n");
+//        LogWork.logWrite("*** End program ***\n\n");
     }
 
 
