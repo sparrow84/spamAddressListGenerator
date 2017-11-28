@@ -1,7 +1,14 @@
+import java.io.File;
+
 class MailLogHandler {
 
-    MailLogHandler() {
-        //
+//    private String sourceFileName;
+    private File sourceFile;
+
+    MailLogHandler(String mailLogPath) {
+        sourceFile = new File(mailLogPath);
+
+
     }
 
     void dummyMethod() {

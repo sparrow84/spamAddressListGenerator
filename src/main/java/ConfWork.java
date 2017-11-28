@@ -2,21 +2,21 @@ import java.io.*;
 
 public class ConfWork {
 
-    private String nameConfFile = "salg";
-    private File pConfig = new File("../" + nameConfFile + ".conf");
+    private static String nameConfFile = "salg";
+    private static File pConfig = new File("../" + nameConfFile + ".conf");
 
-    private String mailLogPath;
-    private int allowableFrequency;
-    private int amnestyPeriod;
-    private int timeWaitRepeat;
-    private long lineNumberToStart;
-    private String trash;
+    private static String mailLogPath;
+    private static int allowableFrequency;
+    private static int amnestyPeriod;
+    private static int timeWaitRepeat;
+    private static long lineNumberToStart;
+    private static String trash;
 
-    ConfWork() {
-        readConfig();
-    }
+//    ConfWork() {
+//        readConfig();
+//    }
 
-    public void readConfig() {
+    public static void readConfig() {
 
         if (!pConfig.exists()) {
             try {
@@ -24,14 +24,16 @@ public class ConfWork {
 
                 // Fill config parametrs by default
                 try (FileWriter fileWriter = new FileWriter(pConfig,true)) {
-                    fileWriter.write("\n; Path to mail server log file");
+                    fileWriter.write("; Path to mail server log file");
                     fileWriter.write("\n; path must be specified without quotes");
                     fileWriter.write("\nmailLogPath = ~/mail");
                     fileWriter.write("\n");
-                    fileWriter.write("\n; Allowable frequency in minutes");
+                    fileWriter.write("\n; Allowable frequency of the address in the file in minutes");
                     fileWriter.write("\nallowableFrequency = 10");
                     fileWriter.write("\n");
                     fileWriter.write("\n; Amnesty period in days");
+                    fileWriter.write("\n; The period after which the address is excluded from the black");
+                    fileWriter.write("\n; list is specified if it was not mentioned in this period.");
                     fileWriter.write("\namnestyPeriod = 30");
                     fileWriter.write("\n");
                     fileWriter.write("\n; Time to wait for repeat in minutes");
@@ -43,11 +45,11 @@ public class ConfWork {
                     fileWriter.write("\nlineNumberToStart = -1");
                     fileWriter.write("\n");
 
-                    this.mailLogPath = "";
-                    this.allowableFrequency = 0;
-                    this.amnestyPeriod = 0;
-                    this.timeWaitRepeat = 0;
-                    this.trash = "";
+                    mailLogPath = "";
+                    allowableFrequency = 0;
+                    amnestyPeriod = 0;
+                    timeWaitRepeat = 0;
+                    trash = "";
 
                 }
                 catch (IOException e) {
@@ -77,23 +79,23 @@ public class ConfWork {
 
                     switch (arrayStrLine[0].trim()){
                         case "mailLogPath":
-                            this.mailLogPath = arrayStrLine[1].trim();
+                            mailLogPath = arrayStrLine[1].trim();
                             break;
                         case "allowableFrequency":
-                            this.allowableFrequency = Integer.parseInt(arrayStrLine[1].trim());
+                            allowableFrequency = Integer.parseInt(arrayStrLine[1].trim());
                             break;
                         case "amnestyPeriod":
-                            this.amnestyPeriod = Integer.parseInt(arrayStrLine[1].trim());
+                            amnestyPeriod = Integer.parseInt(arrayStrLine[1].trim());
                             break;
                         case "timeWaitRepeat":
-                            this.timeWaitRepeat = Integer.parseInt(arrayStrLine[1].trim());
+                            timeWaitRepeat = Integer.parseInt(arrayStrLine[1].trim());
                             break;
                         case "lineNumberToStart":
-                            this.lineNumberToStart = Long.parseLong(arrayStrLine[1].trim());
+                            lineNumberToStart = Long.parseLong(arrayStrLine[1].trim());
                             break;
                         default:
                             for (String s: arrayStrLine) {
-                                this.trash = this.trash + " | " + s;
+                                trash = trash + " | " + s;
                             }
                     }
 
@@ -115,70 +117,70 @@ public class ConfWork {
         System.out.println("- trash = " + trash);
     }
 
-    public String getNameConfFile() {
+    public static String getNameConfFile() {
         return nameConfFile;
     }
 
-    public void setNameConfFile(String nameConfFile) {
-        this.nameConfFile = nameConfFile;
+    public static void setNameConfFile(String nameConfFile_) {
+        nameConfFile = nameConfFile_;
     }
 
-    public File getpConfig() {
+    public static File getpConfig() {
         return pConfig;
     }
 
-    public void setpConfig(File pConfig) {
-        this.pConfig = pConfig;
+    public static void setpConfig(File pConfig_) {
+        pConfig = pConfig_;
     }
 
-    public String getMailLogPath() {
+    public static String getMailLogPath() {
         return mailLogPath;
     }
 
-    public void setMailLogPath(String mailLogPath) {
-        this.mailLogPath = mailLogPath;
+    public static void setMailLogPath(String mailLogPath_) {
+        mailLogPath = mailLogPath_;
     }
 
-    public int getAllowableFrequency() {
+    public static int getAllowableFrequency() {
         return allowableFrequency;
     }
 
-    public void setAllowableFrequency(int allowableFrequency) {
-        this.allowableFrequency = allowableFrequency;
+    public static void setAllowableFrequency(int allowableFrequency_) {
+        allowableFrequency = allowableFrequency_;
     }
 
-    public int getAmnestyPeriod() {
+    public static int getAmnestyPeriod() {
         return amnestyPeriod;
     }
 
-    public void setAmnestyPeriod(int amnestyPeriod) {
-        this.amnestyPeriod = amnestyPeriod;
+    public static void setAmnestyPeriod(int amnestyPeriod_) {
+        amnestyPeriod = amnestyPeriod_;
     }
 
-    public int getTimeWaitRepeat() {
+    public static int getTimeWaitRepeat() {
         return timeWaitRepeat;
     }
 
-    public void setTimeWaitRepeat(int timeWaitRepeat) {
-        this.timeWaitRepeat = timeWaitRepeat;
+    public static void setTimeWaitRepeat(int timeWaitRepeat_) {
+        timeWaitRepeat = timeWaitRepeat_;
     }
 
-    public long getLineNumberToStart() {
+    public static long getLineNumberToStart() {
 
         long tmp = lineNumberToStart;
         lineNumberToStart = -1;
         return tmp;
     }
 
-    public void setLineNumberToStart(long lineNumberToStart) {
-        this.lineNumberToStart = lineNumberToStart;
+    public static void setLineNumberToStart(long lineNumberToStart_) {
+        lineNumberToStart = lineNumberToStart_;
     }
 
-    public String getTrash() {
+    public static String getTrash() {
         return trash;
     }
 
-    public void setTrash(String trash) {
-        this.trash = trash;
+    public static void setTrash(String trash_) {
+        trash = trash_;
     }
 }

@@ -1,19 +1,23 @@
 
 public class Main {
     public static void main(String ... args){
-        LogWork lw = new LogWork();
-        lw.logWrite("*** Start program ***");
+
+        LogWork.logWrite("*** Start program ***");
 
         Thread prog = new Thread(new Runnable() {
             public void run() {
 
                 ConfWork confWork = new ConfWork();
 
-                confWork.printParam();
+                MailLogHandler mlh = new MailLogHandler("");
+                LogWork.logWrite("");
+                LogWork.logWrite("- mailLogPath = " + confWork.getMailLogPath());
+                LogWork.logWrite("- allowableFrequency = " + confWork.getAllowableFrequency());
+                LogWork.logWrite("- amnestyPeriod = " + confWork.getAmnestyPeriod());
+                LogWork.logWrite("- timeWaitRepeat = " + confWork.getTimeWaitRepeat());
+                LogWork.logWrite("- lineNumberToStart = " + confWork.getLineNumberToStart());
+                LogWork.logWrite("- trash = " + confWork.getTrash());
 
-                MailLogHandler mlh = new MailLogHandler();
-
-                mlh.dummyMethod();
 
             }
         });
@@ -22,7 +26,7 @@ public class Main {
 
 
 
-        lw.logWrite("*** End program ***\n\n");
+        LogWork.logWrite("*** End program ***\n\n");
     }
 
 
