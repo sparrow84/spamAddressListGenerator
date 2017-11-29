@@ -31,6 +31,9 @@ public class Main {
                 MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
                 mailLogHandler.scanFile();
 
+
+                ConfWork.chageConfig("allowableFrequency","10");
+
             }
         });
 

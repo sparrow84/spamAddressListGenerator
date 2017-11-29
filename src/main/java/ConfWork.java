@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ConfWork {
 
-    private static String nameConfFile = "salg";
-    private static File pConfig = new File("../" + nameConfFile + ".conf");
+    private static String nameConfFile = "salg.conf";
+    private static File pConfig = new File("../" + nameConfFile);
 
     private static String mailLogPath;
     private static int allowableAddressRepeatTime;
@@ -136,7 +136,38 @@ public class ConfWork {
         System.out.println("- trash = " + trash);
     }
 
+    public static void chageConfig (String parametr, String value) {
+        File tmpConf = new File("../tmpConf.tmp");
+        try {
+            tmpConf.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        try (
+                FileInputStream fileInputStream = new FileInputStream(pConfig);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                FileWriter fileWriter = new FileWriter(tmpConf,true)
+        ) {
+
+            String workLine;
+            String tmpLine;
+
+            for (long i = 1; (workLine = bufferedReader.readLine()) != null; i++) {
+                if (workLine.toLowerCase().contains(parametr.toLowerCase())) {
+                    fileWriter.write(workLine.split("=")[0].trim() + " = " + value + "\n");
+                } else {
+                    fileWriter.write(workLine + "\n");
+                }
+            }
+        } catch (IOException ioe) {
+            LogWork.logWrite(ioe.toString());
+            ioe.printStackTrace();
+        }
+
+        pConfig.delete();
+        tmpConf.renameTo(pConfig);
+    }
 
     public static String getNameConfFile() {
         return nameConfFile;
