@@ -8,6 +8,7 @@ public class ConfWork {
     private static File pConfig = new File("../" + nameConfFile + ".conf");
 
     private static String mailLogPath;
+    private static int allowableAddressRepeatTime;
     private static int allowableFrequency;
     private static int amnestyPeriod;
     private static int timeWaitRepeat;
@@ -31,9 +32,14 @@ public class ConfWork {
                     fileWriter.write("\n; path must be specified without quotes");
                     fileWriter.write("\nmailLogPath = ~/mail");
                     fileWriter.write("\n");
-                    fileWriter.write("\n; Allowable frequency of the address in the file in minutes");
+                    fileWriter.write("\n; The allowed number of addresses in the file");
                     fileWriter.write("\nallowableFrequency = 10");
                     fileWriter.write("\n");
+                    //
+                    fileWriter.write("\n; Allowable address repeat time in the file in minutes");
+                    fileWriter.write("\nallowableAddressRepeatTime = 10");
+                    fileWriter.write("\n");
+                    //
                     fileWriter.write("\n; Amnesty period in days");
                     fileWriter.write("\n; The period after which the address is excluded from the black");
                     fileWriter.write("\n; list is specified if it was not mentioned in this period.");

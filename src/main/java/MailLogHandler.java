@@ -28,10 +28,8 @@ class MailLogHandler {
             for (long i = 1; (workLine = bufferedReader.readLine()) != null; i++) {
                 if (i >= ConfWork.getLineNumberToStart()) {
                     if (searchKeyString(ConfWork.getKeyStringsForSearch(),workLine)) {
-                        System.out.println(i + "    -- -- --    " + workLine);
+                        System.out.println(i + "    --    " + getAddressFromString(workLine) + "    --    " + getAddressTime(workLine));
 
-
-                        System.out.println();
                     }
                 }
             }
@@ -132,23 +130,16 @@ class MailLogHandler {
         return myCalendar.getTimeInMillis();
 
         /* Пересчёт милисекунд обратно в читаемую дату
-
-                                if (!(tmpLine = getAddressFromString(workLine)).equals("0")) {
-                            System.out.print(tmpLine + "   ");
-
-                            long someLongInt = getAddressTime(workLine);
-
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTimeInMillis(someLongInt);
-
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss\"SSS");
-
-                            System.out.println(format.format(cal.getTime()));
-
-
-                            //System.out.println(getAddressTime(workLine));
-                        }
-
+            String tmpLine;
+            if (!(tmpLine = getAddressFromString(workLine)).equals("0")) {
+                System.out.print(tmpLine + "   ");
+                long someLongInt = getAddressTime(workLine);
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(someLongInt);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss\"SSS");
+                System.out.println(format.format(cal.getTime()));
+                //System.out.println(getAddressTime(workLine));
+            }
         */
     }
 }
