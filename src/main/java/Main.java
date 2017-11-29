@@ -16,6 +16,17 @@ public class Main {
                 LogWork.logWrite("- timeWaitRepeat = " + ConfWork.getTimeWaitRepeat());
                 LogWork.logWrite("- lineNumberToStart = " + ConfWork.getLineNumberToStart());
                 LogWork.logWrite("- trash = " + ConfWork.getTrash());
+                LogWork.logWrite("- keyStringsForSearch: ");
+                if (ConfWork.getKeyStringsForSearch() != null) {
+                    for (String s: ConfWork.getKeyStringsForSearch()) {
+                        LogWork.logWrite("      " + s);
+                    }
+                } else {
+                    LogWork.logWrite("     EMPTY");
+                    LogWork.logWrite("The list of key phrases for search is empty. " +
+                            "\nThe execution of the program is aborted.");
+                    return;
+                }
 
                 MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
                 mailLogHandler.scanFile();

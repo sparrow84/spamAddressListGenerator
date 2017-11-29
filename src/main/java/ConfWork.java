@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfWork {
@@ -11,7 +12,7 @@ public class ConfWork {
     private static int amnestyPeriod;
     private static int timeWaitRepeat;
     private static long lineNumberToStart;
-    private static List<String> stringsForSearch;
+    private static List<String> keyStringsForSearch = new ArrayList<>();
     private static String trash;
 
 //    ConfWork() {
@@ -46,7 +47,7 @@ public class ConfWork {
                     fileWriter.write("\n");
                     fileWriter.write("\n; List of strings to look for in the file to identify bad addresses");
                     fileWriter.write("\n; Print one line separated by commas");
-                    fileWriter.write("\nstringsForSearch = " +
+                    fileWriter.write("\nkeyStringsForSearch = " +
                             "SASL LOGIN authentication failed," +
                             "does not resolve to address," +
                             "Host not found," +
@@ -101,19 +102,16 @@ public class ConfWork {
                         case "lineNumberToStart":
                             lineNumberToStart = Long.parseLong(arrayStrLine[1].trim());
                             break;
-                        case "stringsForSearch":
-
+                        case "keyStringsForSearch":
                             for (String s: arrayStrLine[1].trim().split(",")) {
-                                stringsForSearch.add(s);
+                                keyStringsForSearch.add(s.trim().toLowerCase());
                             }
-
                             break;
                         default:
                             for (String s: arrayStrLine) {
                                 trash = trash + " | " + s;
                             }
                     }
-
                 }
             }
 
@@ -196,5 +194,9 @@ public class ConfWork {
 
     public static void setTrash(String trash_) {
         trash = trash_;
+    }
+
+    public static List<String> getKeyStringsForSearch() {
+        return keyStringsForSearch;
     }
 }
