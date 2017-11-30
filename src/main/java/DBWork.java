@@ -17,8 +17,10 @@ public class DBWork {
         //регистрация драйвера JDBC поставщика СУБД
         DriverManager.registerDriver(new JDBC());
         //получение соединеня с СУБД
-        connection = DriverManager.getConnection(createUrlJdbc(getResource("main2.db")));
+        connection = DriverManager.getConnection(createUrlJdbc(ConfWork.getBasePath()));
         connection.setAutoCommit(false);
+        LogWork.logWrite(connection.isClosed() ? "Connection CLOSED" : "Connection OPEN");
+        LogWork.logWrite(connection.toString());
     }
 
     /**
@@ -28,6 +30,13 @@ public class DBWork {
         try {
             connection.close();
         } catch (SQLException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            e.printStackTrace();
+        }
+        try {
+            LogWork.logWrite(connection.isClosed() ? "Connection CLOSED" : "Connection OPEN");
+        } catch (SQLException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
         }
     }
@@ -43,7 +52,8 @@ public class DBWork {
             statement.setString(1, name);
             statement.execute();
             connection.commit();
-        } catch (Throwable t) {
+        } catch (Throwable e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
             connection.rollback();
         }
     }
@@ -55,11 +65,12 @@ public class DBWork {
     /**
      * Создание адреса для соединения с JDBC
      *
-     * @param dbFile путь к файлу бд
+     * @param dbFilePath путь к файлу бд
      * @return адрес бд (строка)
      */
-    protected static String createUrlJdbc(File dbFile) {
-        return String.format("jdbc:sqlite:%s", dbFile.getAbsolutePath());
+    protected static String createUrlJdbc(String dbFilePath) {
+        //return String.format("jdbc:sqlite:%s", dbFile.getAbsolutePath());
+        return String.format("jdbc:sqlite:%s", dbFilePath);
     }
 
     /**
@@ -72,4 +83,20 @@ public class DBWork {
         return new File(Main.class.getClassLoader().getResource(resourceName).getFile());
     }
 
+
+
+
+    /* Create table
+
+CREATE TABLE addr_table (
+    id    INTEGER      PRIMARY KEY AUTOINCREMENT
+                       UNIQUE
+                       NOT NULL
+                       DEFAULT (0),
+    addr  VARCHAR (50),
+    time  BIGINT,
+    count INT
+);
+
+    */
 }

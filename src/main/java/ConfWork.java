@@ -8,8 +8,9 @@ public class ConfWork {
     private static File pConfig = new File("../" + nameConfFile);
 
     private static String mailLogPath;
-    private static int allowableAddressRepeatTime;
+    private static String basePath;
     private static int allowableFrequency;
+    private static int allowableAddressRepeatTime;
     private static int amnestyPeriod;
     private static int timeWaitRepeat;
     private static long lineNumberToStart;
@@ -29,9 +30,15 @@ public class ConfWork {
                 // Fill config parametrs by default
                 try (FileWriter fileWriter = new FileWriter(pConfig,true)) {
                     fileWriter.write("; Path to mail server log file");
-                    fileWriter.write("\n; path must be specified without quotes");
+                    fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
                     fileWriter.write("\nmailLogPath = ~/mail");
                     fileWriter.write("\n");
+                    //
+                    fileWriter.write("\n; Path to data base for storage found adresses");
+                    fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
+                    fileWriter.write("\nbasePath = ../salgBase.db");
+                    fileWriter.write("\n");
+                    //
                     fileWriter.write("\n; The allowed number of addresses in the file");
                     fileWriter.write("\nallowableFrequency = 10");
                     fileWriter.write("\n");
@@ -62,16 +69,19 @@ public class ConfWork {
 
                     mailLogPath = "";
                     allowableFrequency = 0;
+                    allowableAddressRepeatTime = 0;
                     amnestyPeriod = 0;
                     timeWaitRepeat = 0;
                     trash = "";
 
                 }
                 catch (IOException e) {
+                    LogWork.logWrite("Atention  --  " + e.toString());
                     e.printStackTrace();
                 }
 
             } catch (IOException e) {
+                LogWork.logWrite("Atention  --  " + e.toString());
                 e.printStackTrace();
             }
         }
@@ -80,24 +90,24 @@ public class ConfWork {
         try {
             FileInputStream fstream = new FileInputStream(pConfig);
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-
             String strLine;
             String[] arrayStrLine;
-
             for (long i = 1; (strLine = br.readLine()) != null; i++) {
-
                 // Ignore comments (string starts with ";")
                 if (!strLine.startsWith(";")) {
-                    System.out.println(strLine);
-
                     arrayStrLine = strLine.split("=");
-
                     switch (arrayStrLine[0].trim()){
                         case "mailLogPath":
                             mailLogPath = arrayStrLine[1].trim();
                             break;
+                        case "basePath":
+                            basePath = arrayStrLine[1].trim();
+                            break;
                         case "allowableFrequency":
                             allowableFrequency = Integer.parseInt(arrayStrLine[1].trim());
+                            break;
+                        case "allowableAddressRepeatTime":
+                            allowableAddressRepeatTime = Integer.parseInt(arrayStrLine[1].trim());
                             break;
                         case "amnestyPeriod":
                             amnestyPeriod = Integer.parseInt(arrayStrLine[1].trim());
@@ -120,8 +130,8 @@ public class ConfWork {
                     }
                 }
             }
-
         } catch (IOException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
         }
     }
@@ -129,11 +139,23 @@ public class ConfWork {
     public void printParam() {
         System.out.println();
         System.out.println("- mailLogPath = " + mailLogPath);
+        System.out.println("- basePath = " + basePath);
         System.out.println("- allowableFrequency = " + allowableFrequency);
+        System.out.println("- allowableAddressRepeatTime = " + allowableAddressRepeatTime);
         System.out.println("- amnestyPeriod = " + amnestyPeriod);
         System.out.println("- timeWaitRepeat = " + timeWaitRepeat);
         System.out.println("- lineNumberToStart = " + lineNumberToStart);
         System.out.println("- trash = " + trash);
+        System.out.println("- getKeyStringsForSearch:");
+
+        if (ConfWork.getKeyStringsForSearch() != null) {
+            for (String s: ConfWork.getKeyStringsForSearch()) {
+                LogWork.logWrite("      " + s);
+            }
+        } else {
+            LogWork.logWrite("     EMPTY");
+        }
+
     }
 
     public static void chageConfig (String parametr, String value) {
@@ -141,6 +163,7 @@ public class ConfWork {
         try {
             tmpConf.createNewFile();
         } catch (IOException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
         }
 
@@ -161,7 +184,7 @@ public class ConfWork {
                 }
             }
         } catch (IOException ioe) {
-            LogWork.logWrite(ioe.toString());
+            LogWork.logWrite("Atention  --  " + ioe.toString());
             ioe.printStackTrace();
         }
 
@@ -193,12 +216,28 @@ public class ConfWork {
         mailLogPath = mailLogPath_;
     }
 
+    public static String getBasePath() {
+        return basePath;
+    }
+
+    public static void setBasePath(String basePath_) {
+        basePath = basePath_;
+    }
+
     public static int getAllowableFrequency() {
         return allowableFrequency;
     }
 
     public static void setAllowableFrequency(int allowableFrequency_) {
         allowableFrequency = allowableFrequency_;
+    }
+
+    public static int getAllowableAddressRepeatTime() {
+        return allowableAddressRepeatTime;
+    }
+
+    public static void setAllowableAddressRepeatTime(int allowableAddressRepeatTime_) {
+        allowableAddressRepeatTime = allowableAddressRepeatTime_;
     }
 
     public static int getAmnestyPeriod() {

@@ -11,7 +11,9 @@ public class Main {
 
                 LogWork.logWrite("");
                 LogWork.logWrite("- mailLogPath = " + ConfWork.getMailLogPath());
+                LogWork.logWrite("- basePath = " + ConfWork.getBasePath());
                 LogWork.logWrite("- allowableFrequency = " + ConfWork.getAllowableFrequency());
+                LogWork.logWrite("- allowableAddressRepeatTime = " + ConfWork.getAllowableAddressRepeatTime());
                 LogWork.logWrite("- amnestyPeriod = " + ConfWork.getAmnestyPeriod());
                 LogWork.logWrite("- timeWaitRepeat = " + ConfWork.getTimeWaitRepeat());
                 LogWork.logWrite("- lineNumberToStart = " + ConfWork.getLineNumberToStart());
@@ -28,11 +30,20 @@ public class Main {
                     return;
                 }
 
+                try {
+                    DBWork.connect();
+                } catch (Exception e) {
+                    LogWork.logWrite("Atention  --  " + e.toString());
+                    e.printStackTrace();
+                }
+
                 MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
                 mailLogHandler.scanFile();
 
 
                 ConfWork.chageConfig("allowableFrequency","10");
+
+                DBWork.disconnect();
 
             }
         });

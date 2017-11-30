@@ -34,7 +34,7 @@ class MailLogHandler {
                 }
             }
         } catch (IOException ioe) {
-            LogWork.logWrite(ioe.toString());
+            LogWork.logWrite("Atention  --  " + ioe.toString());
             ioe.printStackTrace();
         }
     }
