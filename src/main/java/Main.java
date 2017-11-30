@@ -33,7 +33,7 @@ public class Main {
 
 
                 ConfWork.chageConfig("allowableFrequency","10");
-
+                ConfWork.chageConfig("amnestyPeriod","30");
             }
         });
 

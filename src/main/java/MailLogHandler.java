@@ -28,7 +28,7 @@ class MailLogHandler {
             for (long i = 1; (workLine = bufferedReader.readLine()) != null; i++) {
                 if (i >= ConfWork.getLineNumberToStart()) {
                     if (searchKeyString(ConfWork.getKeyStringsForSearch(),workLine)) {
-                        System.out.println(i + "    --    " + getAddressFromString(workLine) + "    --    " + getAddressTime(workLine));
+//                        System.out.println(i + "    --    " + getAddressFromString(workLine) + "    --    " + getAddressTime(workLine));
 
                     }
                 }
