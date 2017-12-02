@@ -30,6 +30,9 @@ class MailLogHandler {
                     if (searchKeyString(ConfWork.getKeyStringsForSearch(),workLine)) {
 //                        System.out.println(i + "    --    " + getAddressFromString(workLine) + "    --    " + getAddressTime(workLine));
 
+
+
+                        DBWork.insert(getAddressFromString(workLine),getAddressTime(workLine),1);
                     }
                 }
             }

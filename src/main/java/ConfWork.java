@@ -68,6 +68,7 @@ public class ConfWork {
                     fileWriter.write("\n");
 
                     mailLogPath = "";
+                    basePath = "";
                     allowableFrequency = 0;
                     allowableAddressRepeatTime = 0;
                     amnestyPeriod = 0;

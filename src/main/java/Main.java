@@ -1,4 +1,3 @@
-
 public class Main {
     public static void main(String ... args){
 
@@ -42,6 +41,11 @@ public class Main {
 
 
                 ConfWork.chageConfig("allowableFrequency","10");
+
+
+                //DBWork.deleteAllDataTable();
+
+                DBWork.showDataTable();
 
                 DBWork.disconnect();
 
