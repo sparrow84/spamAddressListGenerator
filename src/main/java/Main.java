@@ -8,26 +8,8 @@ public class Main {
 
                 ConfWork.readConfig();
 
-                LogWork.logWrite("");
-                LogWork.logWrite("- mailLogPath = " + ConfWork.getMailLogPath());
-                LogWork.logWrite("- basePath = " + ConfWork.getBasePath());
-                LogWork.logWrite("- allowableFrequency = " + ConfWork.getAllowableFrequency());
-                LogWork.logWrite("- allowableAddressRepeatTime = " + ConfWork.getAllowableAddressRepeatTime());
-                LogWork.logWrite("- amnestyPeriod = " + ConfWork.getAmnestyPeriod());
-                LogWork.logWrite("- timeWaitRepeat = " + ConfWork.getTimeWaitRepeat());
-                LogWork.logWrite("- lineNumberToStart = " + ConfWork.getLineNumberToStart());
-                LogWork.logWrite("- trash = " + ConfWork.getTrash());
-                LogWork.logWrite("- keyStringsForSearch: ");
-                if (ConfWork.getKeyStringsForSearch() != null) {
-                    for (String s: ConfWork.getKeyStringsForSearch()) {
-                        LogWork.logWrite("      " + s);
-                    }
-                } else {
-                    LogWork.logWrite("     EMPTY");
-                    LogWork.logWrite("The list of key phrases for search is empty. " +
-                            "\nThe execution of the program is aborted.");
-                    return;
-                }
+                LogWork.logWrite(ConfWork.printParam());
+
 
                 try {
                     DBWork.connect();
@@ -37,18 +19,19 @@ public class Main {
                 }
 
                 MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
-                mailLogHandler.scanFile();
+                long lactString = mailLogHandler.scanFile();
+
+                ConfWork.chageConfig("lineNumberToStart", String.valueOf(lactString));
+
+//                ConfWork.chageConfig("allowableFrequency","10");
 
 
-                ConfWork.chageConfig("allowableFrequency","10");
+//                DBWork.deleteAllDataTable();
 
-
-                //DBWork.deleteAllDataTable();
 
                 DBWork.showDataTable();
 
                 DBWork.disconnect();
-
             }
         });
 

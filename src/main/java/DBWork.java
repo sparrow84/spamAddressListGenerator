@@ -45,7 +45,9 @@ public class DBWork {
     public static void showDataTable () {
 //        List<String> res = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT id,addr,time,count FROM addr_table;");
+            ResultSet resultSet = statement.executeQuery("SELECT id,count,addr,time FROM addr_table ORDER BY count DESC;");
+
+            System.out.println("\n   ---   showDataTable   ---   ");
             while (resultSet.next()) {
                 System.out.println(
                         resultSet.getString("addr") + "   " +
@@ -57,6 +59,7 @@ public class DBWork {
             LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
         }
+        System.out.println("\n   |||   showDataTable   |||   ");
     }
 
 
@@ -91,35 +94,73 @@ public class DBWork {
         }
     }
 
+    
+
+    public static void update(String addr, long time) {
+
+        int count = 0;
+        // Get value "count" from base
+        try (PreparedStatement statement = connection.prepareStatement(
+                "SELECT count FROM addr_table WHERE addr = ?;"
+        )) {
+            statement.setString(1, addr);
+            ResultSet resultSet = statement.executeQuery();
+            count = resultSet.getInt("count");
+        } catch (SQLException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
+        }
+        
+        try (PreparedStatement statement = connection.prepareStatement(
+                "UPDATE addr_table SET count = ?,time = ? WHERE addr = ?;"
+            )
+        ) {
+            statement.setInt(1, count + 1);
+            statement.setLong(2, time);
+            statement.setString(3, addr);
+            statement.execute();
+            connection.commit();
+        } catch (Throwable e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                LogWork.logWrite("Atention  --  " + e1.toString());
+                e1.printStackTrace();
+            }
+        }
+    }
+
     /**
     * DON'T WORK
     * */
     public static void deleteAllDataTable () {
         try (Statement statement = connection.createStatement()) {
-            statement.executeQuery("DELETE FROM addr_table;");
+            statement.execute("DELETE FROM addr_table;");
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
         }
     }
 
-    /**
-     * DON'T WORK
-     * */
-    public static void searchAddr (String addr) {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM addr_table WHERE addr = ?;");
-            while (resultSet.next()) {
-                System.out.println(
-                        resultSet.getString("addr") + "   " +
-                                resultSet.getLong("time") + "   " +
-                                resultSet.getInt("count")
-                );
-            }
+    
+    public static int searchAddr (String addr) {
+//        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM addr_table WHERE addr = ?;")) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS CO FROM addr_table WHERE addr = ?;")) {
+            statement.setString(1, addr);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.getInt("CO");
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
+        return 0;
     }
 
 
@@ -148,6 +189,8 @@ public class DBWork {
     protected static File getResource(String resourceName) {
         return new File(Main.class.getClassLoader().getResource(resourceName).getFile());
     }
+
+
 
 
 

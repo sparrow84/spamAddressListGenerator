@@ -137,26 +137,25 @@ public class ConfWork {
         }
     }
 
-    public void printParam() {
-        System.out.println();
-        System.out.println("- mailLogPath = " + mailLogPath);
-        System.out.println("- basePath = " + basePath);
-        System.out.println("- allowableFrequency = " + allowableFrequency);
-        System.out.println("- allowableAddressRepeatTime = " + allowableAddressRepeatTime);
-        System.out.println("- amnestyPeriod = " + amnestyPeriod);
-        System.out.println("- timeWaitRepeat = " + timeWaitRepeat);
-        System.out.println("- lineNumberToStart = " + lineNumberToStart);
-        System.out.println("- trash = " + trash);
-        System.out.println("- getKeyStringsForSearch:");
+    public static String printParam() {
+        String params = "\n- mailLogPath = " + mailLogPath +
+        "\n- basePath = " + basePath +
+        "\n- allowableFrequency = " + allowableFrequency +
+        "\n- allowableAddressRepeatTime = " + allowableAddressRepeatTime +
+        "\n- amnestyPeriod = " + amnestyPeriod +
+        "\n- timeWaitRepeat = " + timeWaitRepeat +
+        "\n- lineNumberToStart = " + lineNumberToStart +
+        "\n- trash = " + trash +
+        "\n- getKeyStringsForSearch:";
 
         if (ConfWork.getKeyStringsForSearch() != null) {
             for (String s: ConfWork.getKeyStringsForSearch()) {
-                LogWork.logWrite("      " + s);
+                params = params + "\n      " + s;
             }
         } else {
-            LogWork.logWrite("     EMPTY");
+            params = params + "\n     EMPTY";
         }
-
+        return params;
     }
 
     public static void chageConfig (String parametr, String value) {

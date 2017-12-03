@@ -16,30 +16,42 @@ class MailLogHandler {
         sourceFile = new File(mailLogPath);
     }
 
-    public void scanFile() {
+    public long scanFile() {
+
+        long lastI = 1;
+
         try (
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream))
         ) {
 
             String workLine;
-            String tmpLine;
+            String tmpAddr;
+            long tmpTime;
+
 
             for (long i = 1; (workLine = bufferedReader.readLine()) != null; i++) {
+                lastI = i;
                 if (i >= ConfWork.getLineNumberToStart()) {
                     if (searchKeyString(ConfWork.getKeyStringsForSearch(),workLine)) {
-//                        System.out.println(i + "    --    " + getAddressFromString(workLine) + "    --    " + getAddressTime(workLine));
+                        tmpAddr = getAddressFromString(workLine);
+                        tmpTime = getAddressTime(workLine);
+                        if (DBWork.searchAddr(tmpAddr) < 1) {
+                            DBWork.insert(tmpAddr,tmpTime,1);
+                        } else {
+                            DBWork.update(tmpAddr,tmpTime);
+                        }
 
-
-
-                        DBWork.insert(getAddressFromString(workLine),getAddressTime(workLine),1);
                     }
                 }
+
             }
         } catch (IOException ioe) {
             LogWork.logWrite("Atention  --  " + ioe.toString());
             ioe.printStackTrace();
         }
+
+        return lastI;
     }
 
     private static boolean searchKeyString (List<String> keyStrings, String targetString) {
