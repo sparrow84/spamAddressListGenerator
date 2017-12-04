@@ -12,22 +12,19 @@ public class Main {
 
 
                 try {
-                    DBWork.connect();
+                    DBWork.connect(ConfWork.getBasePath());
                 } catch (Exception e) {
                     LogWork.logWrite("Atention  --  " + e.toString());
                     e.printStackTrace();
                 }
 
                 MailLogHandler mailLogHandler = new MailLogHandler(ConfWork.getMailLogPath());
-                long lactString = mailLogHandler.scanFile();
 
+                long lactString = mailLogHandler.scanFile();
                 ConfWork.chageConfig("lineNumberToStart", String.valueOf(lactString));
 
-//                ConfWork.chageConfig("allowableFrequency","10");
 
-
-//                DBWork.deleteAllDataTable();
-
+                DBWork.deleteAllDataTable();
 
                 DBWork.showDataTable();
 

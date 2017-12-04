@@ -37,6 +37,9 @@ class MailLogHandler {
                         tmpAddr = getAddressFromString(workLine);
                         tmpTime = getAddressTime(workLine);
                         if (DBWork.searchAddr(tmpAddr) < 1) {
+
+                            System.out.println(DBWork.searchAddrNew(tmpAddr));
+
                             DBWork.insert(tmpAddr,tmpTime,1);
                         } else {
                             DBWork.update(tmpAddr,tmpTime);
@@ -44,7 +47,6 @@ class MailLogHandler {
 
                     }
                 }
-
             }
         } catch (IOException ioe) {
             LogWork.logWrite("Atention  --  " + ioe.toString());

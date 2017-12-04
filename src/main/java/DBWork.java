@@ -1,11 +1,13 @@
 import org.sqlite.JDBC;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class DBWork {
+    private static String dbPath;
     private static Connection connection;
 
 
@@ -14,14 +16,44 @@ public class DBWork {
      *
      * @throws Exception
      */
-    public static void connect () throws Exception {
+    public static void connect (String pathDB) throws Exception {
+
+        File dbFile = new File(pathDB);
+        boolean createTable = false;
+
+        if (!dbFile.exists()) {
+            try {
+                dbFile.createNewFile();
+                createTable = true;
+            } catch (IOException e) {
+                LogWork.logWrite("Atention  --  " + e.toString());
+                e.printStackTrace();
+            }
+        }
+
         //регистрация драйвера JDBC поставщика СУБД
         DriverManager.registerDriver(new JDBC());
         //получение соединеня с СУБД
-        connection = DriverManager.getConnection(createUrlJdbc(ConfWork.getBasePath()));
+        connection = DriverManager.getConnection(createUrlJdbc(dbFile));
         connection.setAutoCommit(false);
         LogWork.logWrite(connection.isClosed() ? "Connection CLOSED" : "Connection OPEN");
-        LogWork.logWrite(connection.toString());
+
+        if (createTable) {
+            try (Statement statement = connection.createStatement()) {
+                statement.execute("CREATE TABLE addr_table (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL DEFAULT (0), addr  VARCHAR (50), time  BIGINT, count INT);");
+                connection.commit();
+                LogWork.logWrite("CREATE TABLE addr_table - " + createTable);
+            } catch (Throwable e) {
+                LogWork.logWrite("Atention  --  " + e.toString());
+                e.printStackTrace();
+                try {
+                    connection.rollback();
+                } catch (SQLException e1) {
+                    LogWork.logWrite("Atention  --  " + e1.toString());
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -140,6 +172,7 @@ public class DBWork {
     public static void deleteAllDataTable () {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DELETE FROM addr_table;");
+            connection.commit();
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
             e.printStackTrace();
@@ -164,6 +197,24 @@ public class DBWork {
     }
 
 
+    public static long searchAddrNew (String addr) {
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT time FROM addr_table WHERE addr = ?;")) {
+            statement.setString(1, addr);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.getLong("time");
+        } catch (SQLException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+
 /*
     protected static ResultObject createResult(ResultSet resultSet) throws SQLException {
         return new ResultObject(resultSet.getInt("id"), resultSet.getString("name"));
@@ -176,8 +227,10 @@ public class DBWork {
      * @return адрес бд (строка)
      */
     protected static String createUrlJdbc(String dbFilePath) {
-        //return String.format("jdbc:sqlite:%s", dbFile.getAbsolutePath());
         return String.format("jdbc:sqlite:%s", dbFilePath);
+    }
+    protected static String createUrlJdbc(File dbFile) {
+        return String.format("jdbc:sqlite:%s", dbFile.getAbsolutePath());
     }
 
     /**
@@ -199,15 +252,7 @@ public class DBWork {
 
     /* Create table
 
-CREATE TABLE addr_table (
-    id    INTEGER      PRIMARY KEY AUTOINCREMENT
-                       UNIQUE
-                       NOT NULL
-                       DEFAULT (0),
-    addr  VARCHAR (50),
-    time  BIGINT,
-    count INT
-);
+CREATE TABLE addr_table (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL DEFAULT (0), addr  VARCHAR (50), time  BIGINT, count INT);
 
     */
 }

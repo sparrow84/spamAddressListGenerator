@@ -224,8 +224,9 @@ public class ConfWork {
         basePath = basePath_;
     }
 
-    public static int getAllowableFrequency() {
-        return allowableFrequency;
+    public static long getAllowableFrequency() {
+        long result = (long) allowableFrequency * (long) 60 * (long) 1000;
+        return result;
     }
 
     public static void setAllowableFrequency(int allowableFrequency_) {
