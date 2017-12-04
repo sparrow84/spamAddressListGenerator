@@ -180,7 +180,7 @@ public class DBWork {
     }
 
     
-    public static int searchAddr (String addr) {
+    public static int searchAddrOld (String addr) {
 //        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM addr_table WHERE addr = ?;")) {
         try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS CO FROM addr_table WHERE addr = ?;")) {
             statement.setString(1, addr);
@@ -197,12 +197,17 @@ public class DBWork {
     }
 
 
-    public static long searchAddrNew (String addr) {
+    public static long[] searchAddr (String addr) {
+        long[] result = new long[2];
 
-        try (PreparedStatement statement = connection.prepareStatement("SELECT time FROM addr_table WHERE addr = ?;")) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS CO, time FROM addr_table WHERE addr = ?;")) {
             statement.setString(1, addr);
             ResultSet resultSet = statement.executeQuery();
-            return resultSet.getLong("time");
+
+            result[0] = resultSet.getLong("CO");
+            result[1] = resultSet.getLong("time");
+
+            return result;
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
             for (StackTraceElement s: e.getStackTrace()) {
@@ -211,7 +216,7 @@ public class DBWork {
             e.printStackTrace();
         }
 
-        return 0;
+        return result;
     }
 
 

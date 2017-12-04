@@ -28,21 +28,29 @@ class MailLogHandler {
             String workLine;
             String tmpAddr;
             long tmpTime;
+            long[] dataFromBase;
 
-
+            // Беру очердную строку из лога сервера
             for (long i = 1; (workLine = bufferedReader.readLine()) != null; i++) {
                 lastI = i;
+                // Ищу строку на которой остановлся в прощлый раз
                 if (i >= ConfWork.getLineNumberToStart()) {
+                    // Ищу в строке ключевые фразы
                     if (searchKeyString(ConfWork.getKeyStringsForSearch(),workLine)) {
+                        // Забираю из строки адрес и время
                         tmpAddr = getAddressFromString(workLine);
                         tmpTime = getAddressTime(workLine);
-                        if (DBWork.searchAddr(tmpAddr) < 1) {
 
-                            System.out.println(DBWork.searchAddrNew(tmpAddr));
+                        // Ищу в базе запись с такимже адресом как в текущей строке из лога сервера
+                        dataFromBase = DBWork.searchAddr(tmpAddr);
 
+
+                        if (dataFromBase[0] < 1) {
                             DBWork.insert(tmpAddr,tmpTime,1);
                         } else {
-                            DBWork.update(tmpAddr,tmpTime);
+                            if ((tmpTime - dataFromBase[1]) < ConfWork.getAllowableAddressRepeatTime()) {
+                                DBWork.update(tmpAddr,tmpTime);
+                            }
                         }
 
                     }

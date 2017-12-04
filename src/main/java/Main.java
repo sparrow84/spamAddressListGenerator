@@ -24,7 +24,7 @@ public class Main {
                 ConfWork.chageConfig("lineNumberToStart", String.valueOf(lactString));
 
 
-                DBWork.deleteAllDataTable();
+//                DBWork.deleteAllDataTable();
 
                 DBWork.showDataTable();
 
