@@ -47,9 +47,13 @@ class MailLogHandler {
 
                         if (dataFromBase[0] < 1) {
                             DBWork.insert(tmpAddr,tmpTime,1);
+//                            System.out.println("VVA debug  ---  Insert new addr " + tmpAddr);
                         } else {
+//                            System.out.println("VVA debug  ---  before Update exist addr " + tmpAddr);
+//                            System.out.println("VVA debug  ---  " + "\n    tmpTime " + tmpTime+ "\n    dataFromBase[1] " + dataFromBase[1] + "\n    ConfWork.getAllowableAddressRepeatTime() " + ConfWork.getAllowableAddressRepeatTime());
                             if ((tmpTime - dataFromBase[1]) < ConfWork.getAllowableAddressRepeatTime()) {
                                 DBWork.update(tmpAddr,tmpTime);
+//                                System.out.println("VVA debug  ---  Update exist addr " + tmpAddr);
                             }
                         }
 

@@ -233,8 +233,9 @@ public class ConfWork {
         allowableFrequency = allowableFrequency_;
     }
 
-    public static int getAllowableAddressRepeatTime() {
-        return allowableAddressRepeatTime;
+    public static long getAllowableAddressRepeatTime() {
+        long result = (long) allowableAddressRepeatTime * (long) 60 * (long) 1000;
+        return result;
     }
 
     public static void setAllowableAddressRepeatTime(int allowableAddressRepeatTime_) {

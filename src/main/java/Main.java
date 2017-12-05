@@ -28,6 +28,8 @@ public class Main {
 
                 DBWork.showDataTable();
 
+                ConfWork.chageConfig("lineNumberToStart", "1");
+
                 DBWork.disconnect();
             }
         });
