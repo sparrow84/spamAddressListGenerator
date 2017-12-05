@@ -1,9 +1,6 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -62,6 +59,9 @@ class MailLogHandler {
             }
         } catch (IOException ioe) {
             LogWork.logWrite("Atention  --  " + ioe.toString());
+            for (StackTraceElement s: ioe.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             ioe.printStackTrace();
         }
 
@@ -171,4 +171,39 @@ class MailLogHandler {
             }
         */
     }
+
+    public void makeResultFile (String path, List<String> list) {
+        File resultF = new File(path);
+
+        if (resultF.exists()) resultF.delete();
+        try {
+            resultF.createNewFile();
+        } catch (IOException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
+        }
+
+        try (FileWriter fileWriter = new FileWriter(resultF,true)) {
+
+            for (String s: list) {
+                fileWriter.write(s + "\n");
+            }
+
+        }
+        catch (IOException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
+
+

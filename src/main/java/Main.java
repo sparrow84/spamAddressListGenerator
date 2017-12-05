@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String ... args){
 
-        LogWork.logWrite("\n\n   *** Start program ***");
+        LogWork.logWrite("\n\n   *** Start program ***********************************************************");
 
         Thread prog = new Thread(new Runnable() {
             public void run() {
@@ -15,6 +15,9 @@ public class Main {
                     DBWork.connect(ConfWork.getBasePath());
                 } catch (Exception e) {
                     LogWork.logWrite("Atention  --  " + e.toString());
+                    for (StackTraceElement s: e.getStackTrace()) {
+                        LogWork.logWrite("      " + s);
+                    }
                     e.printStackTrace();
                 }
 
@@ -29,6 +32,14 @@ public class Main {
                 DBWork.showDataTable();
 
                 ConfWork.chageConfig("lineNumberToStart", "1");
+
+                System.out.println("NEW ---------------------- NEW");
+                for (String s : DBWork.getListWithForbiddenAddresses()) {
+                    System.out.println("   -   " + s);
+                }
+                System.out.println("NEW ---------------------- NEW");
+
+                mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
 
                 DBWork.disconnect();
             }

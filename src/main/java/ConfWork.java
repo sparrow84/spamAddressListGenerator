@@ -9,6 +9,7 @@ public class ConfWork {
 
     private static String mailLogPath;
     private static String basePath;
+    private static String resultFilePath;
     private static int allowableFrequency;
     private static int allowableAddressRepeatTime;
     private static int amnestyPeriod;
@@ -38,6 +39,10 @@ public class ConfWork {
                     fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
                     fileWriter.write("\nbasePath = ../salgBase.db");
                     fileWriter.write("\n");
+                    //
+                    fileWriter.write("\n; Path for result file with forbidden addresses");
+                    fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
+                    fileWriter.write("\nresultFilePath = ../forbidden_addr.txt");
                     //
                     fileWriter.write("\n; The allowed number of addresses in the file");
                     fileWriter.write("\nallowableFrequency = 10");
@@ -69,6 +74,7 @@ public class ConfWork {
 
                     mailLogPath = "";
                     basePath = "";
+                    resultFilePath = "";
                     allowableFrequency = 0;
                     allowableAddressRepeatTime = 0;
                     amnestyPeriod = 0;
@@ -78,11 +84,17 @@ public class ConfWork {
                 }
                 catch (IOException e) {
                     LogWork.logWrite("Atention  --  " + e.toString());
+                    for (StackTraceElement s: e.getStackTrace()) {
+                        LogWork.logWrite("      " + s);
+                    }
                     e.printStackTrace();
                 }
 
             } catch (IOException e) {
                 LogWork.logWrite("Atention  --  " + e.toString());
+                for (StackTraceElement s: e.getStackTrace()) {
+                    LogWork.logWrite("      " + s);
+                }
                 e.printStackTrace();
             }
         }
@@ -103,6 +115,9 @@ public class ConfWork {
                             break;
                         case "basePath":
                             basePath = arrayStrLine[1].trim();
+                            break;
+                        case "resultFilePath":
+                            resultFilePath = arrayStrLine[1].trim();
                             break;
                         case "allowableFrequency":
                             allowableFrequency = Integer.parseInt(arrayStrLine[1].trim());
@@ -133,6 +148,9 @@ public class ConfWork {
             }
         } catch (IOException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
     }
@@ -140,6 +158,7 @@ public class ConfWork {
     public static String printParam() {
         String params = "\n- mailLogPath = " + mailLogPath +
         "\n- basePath = " + basePath +
+        "\n- resultFilePath = " + resultFilePath +
         "\n- allowableFrequency = " + allowableFrequency +
         "\n- allowableAddressRepeatTime = " + allowableAddressRepeatTime +
         "\n- amnestyPeriod = " + amnestyPeriod +
@@ -164,6 +183,9 @@ public class ConfWork {
             tmpConf.createNewFile();
         } catch (IOException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
 
@@ -184,7 +206,11 @@ public class ConfWork {
                 }
             }
         } catch (IOException ioe) {
+            LogWork.myPrintStackTrace(ioe);
             LogWork.logWrite("Atention  --  " + ioe.toString());
+            for (StackTraceElement s: ioe.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             ioe.printStackTrace();
         }
 
@@ -224,9 +250,16 @@ public class ConfWork {
         basePath = basePath_;
     }
 
-    public static long getAllowableFrequency() {
-        long result = (long) allowableFrequency * (long) 60 * (long) 1000;
-        return result;
+    public static String getResultFilePath() {
+        return resultFilePath;
+    }
+
+    public static void setResultFilePath(String resultFilePath_) {
+        resultFilePath = resultFilePath_;
+    }
+
+    public static int getAllowableFrequency() {
+        return allowableFrequency;
     }
 
     public static void setAllowableFrequency(int allowableFrequency_) {

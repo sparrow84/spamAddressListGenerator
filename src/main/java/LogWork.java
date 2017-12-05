@@ -52,4 +52,12 @@ public class LogWork {
             System.out.println("Что то пошло не так с лог файлом LogWork -> logWrite");
         }
     }
+
+    public static void myPrintStackTrace (Exception e) {
+        LogWork.logWrite("Atention  --  " + e.toString());
+        for (StackTraceElement s: e.getStackTrace()) {
+            LogWork.logWrite("      " + s);
+        }
+        e.printStackTrace();
+    }
 }

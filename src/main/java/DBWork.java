@@ -27,6 +27,9 @@ public class DBWork {
                 createTable = true;
             } catch (IOException e) {
                 LogWork.logWrite("Atention  --  " + e.toString());
+                for (StackTraceElement s: e.getStackTrace()) {
+                    LogWork.logWrite("      " + s);
+                }
                 e.printStackTrace();
             }
         }
@@ -45,11 +48,17 @@ public class DBWork {
                 LogWork.logWrite("CREATE TABLE addr_table - " + createTable);
             } catch (Throwable e) {
                 LogWork.logWrite("Atention  --  " + e.toString());
+                for (StackTraceElement s: e.getStackTrace()) {
+                    LogWork.logWrite("      " + s);
+                }
                 e.printStackTrace();
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
                     LogWork.logWrite("Atention  --  " + e1.toString());
+                    for (StackTraceElement s: e.getStackTrace()) {
+                        LogWork.logWrite("      " + s);
+                    }
                     e1.printStackTrace();
                 }
             }
@@ -64,12 +73,18 @@ public class DBWork {
             connection.close();
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
         try {
             LogWork.logWrite(connection.isClosed() ? "Connection CLOSED" : "Connection OPEN");
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
     }
@@ -89,6 +104,9 @@ public class DBWork {
             }
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
         System.out.println("\n   |||   showDataTable   |||   ");
@@ -117,10 +135,17 @@ public class DBWork {
             connection.commit();
         } catch (Throwable e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
             try {
                 connection.rollback();
             } catch (SQLException e1) {
                 LogWork.logWrite("Atention  --  " + e1.toString());
+                for (StackTraceElement s: e1.getStackTrace()) {
+                    LogWork.logWrite("      " + s);
+                }
                 e1.printStackTrace();
             }
         }
@@ -157,10 +182,17 @@ public class DBWork {
             connection.commit();
         } catch (Throwable e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
             try {
                 connection.rollback();
             } catch (SQLException e1) {
                 LogWork.logWrite("Atention  --  " + e1.toString());
+                for (StackTraceElement s: e1.getStackTrace()) {
+                    LogWork.logWrite("      " + s);
+                }
                 e1.printStackTrace();
             }
         }
@@ -175,6 +207,9 @@ public class DBWork {
             connection.commit();
         } catch (SQLException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
             e.printStackTrace();
         }
     }
@@ -218,6 +253,30 @@ public class DBWork {
 
         return result;
     }
+
+
+    public static List<String> getListWithForbiddenAddresses () {
+        List<String> result = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT addr FROM addr_table WHERE count > ?;")) {
+            statement.setString(1, String.valueOf(ConfWork.getAllowableFrequency()));
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(resultSet.getString("addr"));
+            }
+
+        } catch (SQLException e) {
+            LogWork.logWrite("Atention  --  " + e.toString());
+            for (StackTraceElement s: e.getStackTrace()) {
+                LogWork.logWrite("      " + s);
+            }
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
 
 /*
