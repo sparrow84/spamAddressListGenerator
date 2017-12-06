@@ -3,8 +3,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
+import java.util.Date;
 
 public class DBWork {
     private static String dbPath;
@@ -203,14 +204,12 @@ public class DBWork {
     * */
     public static void deleteAllDataTable () {
         try (Statement statement = connection.createStatement()) {
-            statement.execute("DELETE FROM addr_table;");
-            connection.commit();
+            statement.addBatch("DELETE FROM addr_table;");
+            connection.setAutoCommit(false);
+            statement.executeBatch();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            LogWork.logWrite("Atention  --  " + e.toString());
-            for (StackTraceElement s: e.getStackTrace()) {
-                LogWork.logWrite("      " + s);
-            }
-            e.printStackTrace();
+            LogWork.myPrintStackTrace(e);
         }
     }
 
@@ -261,20 +260,28 @@ public class DBWork {
         try (PreparedStatement statement = connection.prepareStatement("SELECT addr FROM addr_table WHERE count > ?;")) {
             statement.setString(1, String.valueOf(ConfWork.getAllowableFrequency()));
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 result.add(resultSet.getString("addr"));
             }
-
         } catch (SQLException e) {
-            LogWork.logWrite("Atention  --  " + e.toString());
-            for (StackTraceElement s: e.getStackTrace()) {
-                LogWork.logWrite("      " + s);
-            }
-            e.printStackTrace();
+            LogWork.myPrintStackTrace(e);
         }
-
         return result;
+    }
+
+
+    public static void removeOldAddr (int period) {
+        Calendar now = Calendar.getInstance();
+        long maxAllowedDateInMillis = now.getTimeInMillis() - ((long) period * 24 * 60 * 60 * 1000);
+
+        try (Statement statement = connection.createStatement()) {
+            statement.addBatch("DELETE FROM addr_table WHERE time < " + maxAllowedDateInMillis + ";");
+            connection.setAutoCommit(false);
+            statement.executeBatch();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            LogWork.myPrintStackTrace(e);
+        }
     }
 
 

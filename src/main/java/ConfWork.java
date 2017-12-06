@@ -283,8 +283,9 @@ public class ConfWork {
         amnestyPeriod = amnestyPeriod_;
     }
 
-    public static int getTimeWaitRepeat() {
-        return timeWaitRepeat;
+    public static long getTimeWaitRepeat() {
+        long result = timeWaitRepeat * 60 * 1000;
+        return result;
     }
 
     public static void setTimeWaitRepeat(int timeWaitRepeat_) {

@@ -29,19 +29,29 @@ public class Main {
 
 //                DBWork.deleteAllDataTable();
 
+
+
                 DBWork.showDataTable();
 
                 ConfWork.chageConfig("lineNumberToStart", "1");
 
-                System.out.println("NEW ---------------------- NEW");
-                for (String s : DBWork.getListWithForbiddenAddresses()) {
-                    System.out.println("   -   " + s);
-                }
-                System.out.println("NEW ---------------------- NEW");
-
-                mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
+//                System.out.println("NEW ---------------------- NEW");
+//                for (String s : DBWork.getListWithForbiddenAddresses()) {
+//                    System.out.println("   -   " + s);
+//                }
+//                System.out.println("NEW ---------------------- NEW");
+//
+                DBWork.removeOldAddr(ConfWork.getAmnestyPeriod());
+//                mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
 
                 DBWork.disconnect();
+
+                try {
+                    Thread.sleep(ConfWork.getTimeWaitRepeat());
+                } catch (InterruptedException e) {
+                    LogWork.myPrintStackTrace(e);
+                }
+                LogWork.logWrite("*** End program (TMP) ***\n\n");
             }
         });
 

@@ -133,7 +133,7 @@ class MailLogHandler {
             case "jul": month = 6;  break;
             case "aug": month = 7;  break;
             case "sep": month = 8;  break;
-            case "oct": month = 9; break;
+            case "oct": month = 9;  break;
             case "nov": month = 10; break;
             case "dec": month = 11; break;
             default:
