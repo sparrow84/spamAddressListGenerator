@@ -26,16 +26,11 @@ public class Main {
                 long lactString = mailLogHandler.scanFile();
                 ConfWork.chageConfig("lineNumberToStart", String.valueOf(lactString));
 
-
 //                DBWork.deleteAllDataTable();
-
-
 
                 DBWork.showDataTable();
 
-                ConfWork.chageConfig("lineNumberToStart", "1");
-
-
+//                ConfWork.chageConfig("lineNumberToStart", "1");
 
 //                System.out.println("NEW ---------------------- NEW");
 //                for (String s : DBWork.getListWithForbiddenAddresses()) {
@@ -44,26 +39,20 @@ public class Main {
 //                System.out.println("NEW ---------------------- NEW");
 //
                 DBWork.removeOldAddr(ConfWork.getAmnestyPeriod());
-//                mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
+                mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
 
                 DBWork.disconnect();
-
+/*
                 try {
                     Thread.sleep(ConfWork.getTimeWaitRepeat());
                 } catch (InterruptedException e) {
                     LogWork.myPrintStackTrace(e);
                 }
+*/
                 LogWork.logWrite("*** End program (TMP) ***\n\n");
             }
         });
-
         prog.start();
-
-
-
 //        LogWork.logWrite("*** End program ***\n\n");
     }
-
-
-
 }
