@@ -35,6 +35,7 @@ public class Main {
 
                 ConfWork.chageConfig("lineNumberToStart", "1");
 
+
 //                System.out.println("NEW ---------------------- NEW");
 //                for (String s : DBWork.getListWithForbiddenAddresses()) {
 //                    System.out.println("   -   " + s);
