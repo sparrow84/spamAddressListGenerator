@@ -9,7 +9,8 @@ public class LogWork {
     private static SimpleDateFormat formatForCurDate = new SimpleDateFormat("yyyy.MM.dd kk:mm:ss\"SSS");
     private static SimpleDateFormat formatForLogName = new SimpleDateFormat("yyyy.MM.dd");
     private static String nameLogFile = "salg";
-    private static File logFile = new File("../" + nameLogFile + "_" + formatForLogName.format(new Date()) + ".log");
+//    private static File logFile = new File("../" + nameLogFile + "_" + formatForLogName.format(new Date()) + ".log");
+    private static File logFile = new File(nameLogFile + "_" + formatForLogName.format(new Date()) + ".log");
 
 //    public LogWork() {
 //        this.checkLogExist(logFile);

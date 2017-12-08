@@ -36,13 +36,13 @@ public class ConfWork {
                     fileWriter.write("\n");
                     //
                     fileWriter.write("\n; Path to data base for storage found adresses");
-                    fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
-                    fileWriter.write("\nbasePath = ../salgBase.db");
+                    fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed) forexample: ../salgBase.db");
+                    fileWriter.write("\nbasePath = salgBase.db");
                     fileWriter.write("\n");
                     //
                     fileWriter.write("\n; Path for result file with forbidden addresses");
                     fileWriter.write("\n; path must be specified without quotes (spaces in the path are allowed)");
-                    fileWriter.write("\nresultFilePath = ../forbidden_addr.txt");
+                    fileWriter.write("\nresultFilePath = forbidden_addr.txt");
                     //
                     fileWriter.write("\n; The allowed number of addresses in the file");
                     fileWriter.write("\nallowableFrequency = 10");

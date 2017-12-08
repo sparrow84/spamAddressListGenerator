@@ -38,7 +38,8 @@ public class Main {
 //                }
 //                System.out.println("NEW ---------------------- NEW");
 //
-                DBWork.removeOldAddr(ConfWork.getAmnestyPeriod());
+                // Удаление всех данных из базы
+//                DBWork.removeOldAddr(ConfWork.getAmnestyPeriod());
                 mailLogHandler.makeResultFile(ConfWork.getResultFilePath(),DBWork.getListWithForbiddenAddresses());
 
                 DBWork.disconnect();

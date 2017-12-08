@@ -187,11 +187,9 @@ class MailLogHandler {
         }
 
         try (FileWriter fileWriter = new FileWriter(resultF,true)) {
-
             for (String s: list) {
                 fileWriter.write(s + "\n");
             }
-
         }
         catch (IOException e) {
             LogWork.logWrite("Atention  --  " + e.toString());
@@ -200,8 +198,6 @@ class MailLogHandler {
             }
             e.printStackTrace();
         }
-
-
     }
 
 }
